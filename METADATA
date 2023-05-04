@@ -7,13 +7,13 @@ description: "Sonic is a simple algorithm for speeding up or slowing down speech
 third_party {
   url {
     type: ARCHIVE
-    value: "https://github.com/waywardgeek/sonic/archive/60eeb064f62a106069d2ce148fabd724f9df9780.zip"
+    value: "https://github.com/waywardgeek/sonic/archive/0555641f2d7e52a3d1720b4ae5affb5d50bdde23.zip"
   }
-  version: "60eeb064f62a106069d2ce148fabd724f9df9780"
+  version: "0555641f2d7e52a3d1720b4ae5affb5d50bdde23"
   license_type: NOTICE
   last_upgrade_date {
     year: 2023
-    month: 2
-    day: 27
+    month: 5
+    day: 3
   }
 }
