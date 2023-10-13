@@ -81,7 +81,7 @@ sonic.o: sonic.c sonic.h
 # Define a version of sonic with the internal names defined so others (i.e. Speedy)
 # can build new APIs that superscede the default API.
 sonic_internal.o: sonic.c sonic.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -DSONIC_INTERNAL -DSONIC_SPECTROGRAM -c sonic.c -o sonic_internal.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -DSONIC_INTERNAL -c sonic.c -o sonic_internal.o
 
 wave.o: wave.c wave.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c wave.c
@@ -99,8 +99,8 @@ ifneq ($(UNAME), Darwin)
 	ln -sf $(LIB_NAME)$(LIB_TAG) $(LIB_NAME).0
 endif
 
-$(LIB_INTERNAL_NAME)$(LIB_TAG): $(EXTRA_OBJ) sonic_internal.o spectrogram.o wave.o
-	$(CC) $(CFLAGS) $(LDFLAGS) $(SHARED_OPT) -Wl,$(SONAME)$(LIB_INTERNAL_NAME) $(EXTRA_OBJ) sonic_internal.o spectrogram.o -o $(LIB_INTERNAL_NAME)$(LIB_TAG) $(FFTLIB)  wave.o
+$(LIB_INTERNAL_NAME)$(LIB_TAG): $(EXTRA_OBJ) sonic_internal.o wave.o  # No spectrogram needed here.
+	$(CC) $(CFLAGS) $(LDFLAGS) $(SHARED_OPT) -Wl,$(SONAME)$(LIB_INTERNAL_NAME) $(EXTRA_OBJ) sonic_internal.o -o $(LIB_INTERNAL_NAME)$(LIB_TAG) $(FFTLIB)  wave.o
 ifneq ($(UNAME), Darwin)
 	ln -sf $(LIB_INTERNAL_NAME)$(LIB_TAG) $(LIB_INTERNAL_NAME)
 	ln -sf $(LIB_INTERNAL_NAME)$(LIB_TAG) $(LIB_INTERNAL_NAME).0
@@ -138,3 +138,13 @@ clean:
 
 check:
 	./sonic -s 2.0 ./samples/talking.wav ./test.wav
+
+
+libspeedy.so:
+	cd speedy; make libspeedy.so  SONIC_DIR=.. FFTW_DIR=../../fftw
+
+speedy_wave: libsonic_internal.so
+	cd speedy; make speedy_wave SONIC_DIR=.. FFTW_DIR=../../fftw
+	# You will probably also need to set the LDPATH.  For example
+	#    export LD_LIBRARY_PATH=/usr/local/lib:../kissfft:speedy:.
+
