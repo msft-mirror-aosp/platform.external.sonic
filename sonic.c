@@ -235,8 +235,6 @@ struct sonicStreamStruct {
   int prevMinDiff;
 };
 
-#ifdef SONIC_SPECTROGRAM
-
 /* Attach user data to the stream. */
 void sonicSetUserData(sonicStream stream, void *userData) {
   stream->userData = userData;
@@ -246,6 +244,8 @@ void sonicSetUserData(sonicStream stream, void *userData) {
 void *sonicGetUserData(sonicStream stream) {
   return stream->userData;
 }
+
+#ifdef SONIC_SPECTROGRAM
 
 /* Compute a spectrogram on the fly. */
 void sonicComputeSpectrogram(sonicStream stream) {
